@@ -3,6 +3,12 @@ import pool from "../config/db.js";
 import jwt from "jsonwebtoken";
 import redis from "../config/cache.js";
 
+const sanitizeUser = (user = {}) => {
+    if (!user || typeof user !== "object") return {};
+    const { password, ...userWithoutPassword } = user;
+    return userWithoutPassword;
+};
+
 export async function authregister(req,res){
     try{
         const {name,email,password,role,address} = req.body;
@@ -82,6 +88,8 @@ export async function authlogin(req,res){
             })
         }
 
+        const safeUser = sanitizeUser(existingUser.rows[0]);
+
         const token  = jwt.sign({
             id:existingUser.rows[0].id,
             email:existingUser.rows[0].email,
@@ -98,7 +106,7 @@ export async function authlogin(req,res){
         res.status(200).json({
             success: true,
             message: "User logged in successfully",
-            user:existingUser.rows[0]
+            user: safeUser
         })
     }
     catch(error){
@@ -145,7 +153,7 @@ export async function authGetMe(req,res){
 
     res.status(200).json({
         message:"User fetched successfully",
-        user: user.rows[0]
+        user: sanitizeUser(user.rows[0])
         }
     );
 

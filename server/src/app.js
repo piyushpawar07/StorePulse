@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRouter from "./routes/auth.routes.js";
-
+import adminRouter from "./routes/admin.routes.js";
 
 
 
@@ -14,6 +14,7 @@ app.use(express.urlencoded({extended:true}))
 app.use(cookieParser())
 
 app.use("/api/auth", authRouter)
+app.use("/api/admin", adminRouter)
 
 
 
