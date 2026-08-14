@@ -1,0 +1,50 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: $font-family-base;
+    font-size: $font-size-base;
+    background-color: $background-color;
+    color: $text-main;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    color: $primary-color;
+    text-decoration: none;
+    
+    &:hover {
+        color: $primary-hover;
+    }
+}
+
+.app-container {
+    min-height: 100vh;
+    @include flex-column;
+}
+
+.app-header {
+    background-color: white;
+    padding: $spacing-md $spacing-xl;
+    @include card-shadow;
+    
+    h1 {
+        font-size: $font-size-xl;
+        color: $primary-color;
+    }
+}
+
+.app-content {
+    flex: 1;
+    padding: $spacing-xl;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
