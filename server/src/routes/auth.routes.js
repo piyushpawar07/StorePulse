@@ -12,7 +12,7 @@ import {
     registerValidation
 } from "../validators/authValidators.js";
 
-authRouter.post("/register", authUser, registerValidation, authregister);
+authRouter.post("/register", registerValidation, authregister);
 authRouter.post("/login", loginValidation, authlogin);
 authRouter.post("/logout", logout);
 authRouter.get("/getMe", authUser, authGetMe);
