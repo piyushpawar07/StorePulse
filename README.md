@@ -4,8 +4,7 @@ A full-stack web application where users can discover registered stores and subm
 
 ## Live Demo
 
-1. [StorePulse-netlify](https://storepulsee.netlify.app)
-2. [StorePluse-Render](https://storepulse-lktx.onrender.com)
+[StorePluse](https://storepulse-lktx.onrender.com)
 
 ## Demo Login Credentials
 
