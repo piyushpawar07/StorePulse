@@ -13,7 +13,7 @@ const app = express()
 
 app.use(cors())
 app.use(express.json())
-app.use(express.urlencoded({extended:true}))
+app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 
 app.use("/api/auth", authRouter)
@@ -28,9 +28,9 @@ const __dirname = path.dirname(__filename);
 
 app.use(express.static(path.join(__dirname, "..", "public", "dist")));
 
-// Catch-all: send index.html for any non-API route (client-side routing)
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "public", "dist", "index.html"));
+
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "..", "public", "dist", "index.html"));
 });
 
 export default app;
