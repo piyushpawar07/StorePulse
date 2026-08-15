@@ -15,7 +15,8 @@ export async function getOwnerDashboard(req, res) {
              FROM stores s
              LEFT JOIN ratings r ON r.store_id = s.id
              WHERE s.owner_id = $1
-             GROUP BY s.id, s.name, s.email, s.address`,
+             GROUP BY s.id, s.name, s.email, s.address
+             ORDER BY s.created_at ASC`,
             [ownerId]
         );
 
@@ -26,19 +27,22 @@ export async function getOwnerDashboard(req, res) {
             });
         }
 
-        const store = storeResult.rows[0];
+        const stores = storeResult.rows.map((s) => ({
+            id: s.id,
+            name: s.name,
+            email: s.email,
+            address: s.address,
+            averageRating: Number(s.averageRating),
+            totalRatings: Number(s.totalRatings)
+        }));
 
         res.status(200).json({
             success: true,
             data: {
-                store: {
-                    id: store.id,
-                    name: store.name,
-                    email: store.email,
-                    address: store.address
-                },
-                averageRating: Number(store.averageRating),
-                totalRatings: Number(store.totalRatings)
+                store: stores[0],
+                averageRating: stores[0].averageRating,
+                totalRatings: stores[0].totalRatings,
+                stores
             }
         });
     } catch (error) {
@@ -58,8 +62,7 @@ export async function getOwnerRatings(req, res) {
         const storeResult = await pool.query(
             `SELECT id
              FROM stores
-             WHERE owner_id = $1
-             LIMIT 1`,
+             WHERE owner_id = $1`,
             [ownerId]
         );
 
@@ -76,6 +79,8 @@ export async function getOwnerRatings(req, res) {
                 u.id AS "userId",
                 u.name AS "userName",
                 u.email AS "userEmail",
+                s.id AS "storeId",
+                s.name AS "storeName",
                 r.rating,
                 r.created_at AS "createdAt"
              FROM ratings r
@@ -94,6 +99,10 @@ export async function getOwnerRatings(req, res) {
                     id: rating.userId,
                     name: rating.userName,
                     email: rating.userEmail
+                },
+                store: {
+                    id: rating.storeId,
+                    name: rating.storeName
                 },
                 rating: rating.rating,
                 createdAt: rating.createdAt

@@ -68,7 +68,7 @@ export const useAuth = () => {
             } else {
                 dispatch({ type: AUTH_ACTIONS.AUTH_FAILURE, payload: null });
             }
-        } catch (error) {
+        } catch {
             dispatch({ type: AUTH_ACTIONS.AUTH_FAILURE, payload: null });
         }
     }, [dispatch, AUTH_ACTIONS]);

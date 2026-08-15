@@ -1,10 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
-import { fetchStoreById } from '../api/store.api';
+import { fetchAdminStoreById } from '../api/admin.api';
 
-/**
- * Hooks layer for a single store detail.
- */
-export const useStoreDetail = (id) => {
+export const useAdminStoreDetail = (id) => {
     const [store, setStore] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -14,13 +11,13 @@ export const useStoreDetail = (id) => {
         setLoading(true);
         setError(null);
         try {
-            const data = await fetchStoreById(id);
+            const data = await fetchAdminStoreById(id);
             setStore(data.store);
         } catch (err) {
             if (err.response?.status === 404) {
                 setError('Store not found.');
             } else {
-                setError(err.response?.data?.message || 'Failed to load store details');
+                setError(err.response?.data?.message || 'Failed to load store');
             }
         } finally {
             setLoading(false);

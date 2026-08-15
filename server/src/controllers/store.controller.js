@@ -33,20 +33,24 @@ export async function getStores(req, res) {
         const { sortColumn, order } = resolveSort(req.query);
 
         const search = String(req.query.search || "").trim();
-        const filters = [];
         const filterValues = [];
 
-        if (search) {
-            filters.push(`(s.name ILIKE $${filterValues.length + 1} OR s.address ILIKE $${filterValues.length + 2})`);
-            filterValues.push(`%${search}%`, `%${search}%`);
-        }
+        // Two separate WHERE clauses:
+        // countWhereClause uses $1/$2 (filterValues only, no userId)
+        // mainWhereClause uses $2/$3 (userId is $1 in the main query params)
+        let countWhereClause = "";
+        let mainWhereClause = "";
 
-        const whereClause = filters.length > 0 ? `WHERE ${filters.join(" AND ")}` : "";
+        if (search) {
+            filterValues.push(`%${search}%`, `%${search}%`);
+            countWhereClause = `WHERE (s.name ILIKE $1 OR s.address ILIKE $2)`;
+            mainWhereClause = `WHERE (s.name ILIKE $2 OR s.address ILIKE $3)`;
+        }
 
         const totalResult = await pool.query(
             `SELECT COUNT(*)::int AS total
              FROM stores s
-             ${whereClause}`,
+             ${countWhereClause}`,
             filterValues
         );
 
@@ -60,7 +64,7 @@ export async function getStores(req, res) {
                 MAX(CASE WHEN r.user_id = $1 THEN r.rating END) AS "userRating"
              FROM stores s
              LEFT JOIN ratings r ON r.store_id = s.id
-             ${whereClause}
+             ${mainWhereClause}
              GROUP BY s.id, s.name, s.email, s.address
              ORDER BY ${sortColumn} ${order}
              LIMIT $${filterValues.length + 2}

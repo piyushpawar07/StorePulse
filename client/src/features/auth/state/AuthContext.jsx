@@ -1,4 +1,4 @@
-import { createContext, useReducer, useEffect } from 'react';
+import { createContext, useReducer } from 'react';
 
 // Initial state
 const initialState = {
@@ -60,7 +60,8 @@ const authReducer = (state, action) => {
     }
 };
 
-// Context
+// Context and Provider are intentionally co-located — eslint-disable-next-line is expected.
+// eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext();
 
 // Provider

@@ -1,25 +1,23 @@
 import { useState, useEffect, useCallback } from 'react';
-import { fetchStores } from '../api/store.api';
+import { fetchAdminStores } from '../api/admin.api';
 
-/**
- * Hooks layer for store list.
- * Manages local state: stores, pagination, search, loading, error.
- */
-export const useStores = () => {
+export const useAdminStores = () => {
     const [stores, setStores] = useState([]);
     const [pagination, setPagination] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [search, setSearch] = useState('');
     const [page, setPage] = useState(1);
-    const [sortBy, setSortBy] = useState('rating');
-    const [order, setOrder] = useState('desc');
+    const [sortBy, setSortBy] = useState('name');
+    const [order, setOrder] = useState('asc');
 
-    const loadStores = useCallback(async () => {
+    const load = useCallback(async () => {
         setLoading(true);
         setError(null);
         try {
-            const data = await fetchStores({ search, page, limit: 10, sortBy, order });
+            const params = { page, limit: 10, sortBy, order };
+            if (search) params.name = search;
+            const data = await fetchAdminStores(params);
             setStores(data.data);
             setPagination(data.pagination);
         } catch (err) {
@@ -30,19 +28,19 @@ export const useStores = () => {
     }, [search, page, sortBy, order]);
 
     useEffect(() => {
-        void loadStores();
-    }, [loadStores]);
+        void load();
+    }, [load]);
 
     const handleSearch = (value) => {
         setSearch(value);
-        setPage(1); // reset to first page on new search
+        setPage(1);
     };
 
-    const handleSortChange = (newSortBy) => {
-        if (newSortBy === sortBy) {
+    const handleSortChange = (col) => {
+        if (col === sortBy) {
             setOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'));
         } else {
-            setSortBy(newSortBy);
+            setSortBy(col);
             setOrder('asc');
         }
         setPage(1);
@@ -57,9 +55,9 @@ export const useStores = () => {
         page,
         sortBy,
         order,
+        setPage,
         handleSearch,
         handleSortChange,
-        setPage,
-        refetch: loadStores,
+        refetch: load,
     };
 };

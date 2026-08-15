@@ -118,6 +118,7 @@ const usersQueryValidation = [
         .withMessage("Invalid user sort column"),
     query("role")
         .optional()
+        .if(query("role").exists())
         .customSanitizer((role) => String(role).toUpperCase())
         .isIn(allowedRoles)
         .withMessage("Role must be one of ADMIN, USER, STORE_OWNER"),

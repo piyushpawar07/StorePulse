@@ -8,11 +8,10 @@ const StoreDetail = () => {
     const { id } = useParams();
     const { store, loading, error, refetch } = useStoreDetail(id);
     const [userRating, setUserRating] = useState(null);
-    const [averageRating, setAverageRating] = useState(null);
 
     // Once store data is available, seed local state from it
     const displayUserRating = userRating ?? store?.userRating;
-    const displayAvgRating = averageRating ?? store?.averageRating;
+    const displayAvgRating = store?.averageRating;
 
     const handleRated = (updatedRating) => {
         setUserRating(updatedRating.rating);

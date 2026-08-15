@@ -1,0 +1,181 @@
+@use '../../../shared/styles/variables' as *;
+@use '../../../shared/styles/mixins' as *;
+
+/* =========================================
+   Owner Layout
+   ========================================= */
+.owner-page {
+    max-width: 800px;
+}
+
+.owner-page__header {
+    margin-bottom: $spacing-xl;
+
+    h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: $text-main;
+    }
+
+    p {
+        color: $text-light;
+        font-size: $font-size-sm;
+        margin-top: $spacing-xs;
+    }
+}
+
+.owner-page__nav {
+    display: flex;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-xl;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: $spacing-sm;
+
+    a {
+        font-size: $font-size-sm;
+        font-weight: 500;
+        color: $text-light;
+        padding: $spacing-xs $spacing-sm;
+        border-radius: $border-radius-sm;
+
+        &:hover { color: $primary-color; background: #f1f5f9; }
+        &.active { color: $primary-color; background: #eff6ff; }
+    }
+}
+
+/* =========================================
+   Dashboard Cards
+   ========================================= */
+.owner-store-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: $border-radius-md;
+    padding: $spacing-xl;
+    margin-bottom: $spacing-lg;
+    @include card-shadow;
+
+    h3 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: $text-main;
+        margin-bottom: $spacing-md;
+        padding-bottom: $spacing-sm;
+        border-bottom: 1px solid #f1f5f9;
+    }
+}
+
+.owner-store-info {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-lg;
+}
+
+.owner-store-info__row {
+    display: flex;
+    gap: $spacing-md;
+    font-size: $font-size-sm;
+
+    .label {
+        font-weight: 600;
+        color: $text-light;
+        min-width: 70px;
+    }
+}
+
+.owner-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $spacing-md;
+
+    @media (max-width: 480px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.owner-stat {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: $border-radius-md;
+    padding: $spacing-md;
+    text-align: center;
+
+    &__label {
+        font-size: $font-size-sm;
+        color: $text-light;
+        font-weight: 500;
+        margin-bottom: $spacing-xs;
+    }
+
+    &__value {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: $text-main;
+    }
+
+    &__star {
+        font-size: 1.25rem;
+        color: #f59e0b;
+    }
+}
+
+/* =========================================
+   State messages
+   ========================================= */
+.owner-state {
+    padding: $spacing-xl;
+    text-align: center;
+    color: $text-light;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: $border-radius-md;
+
+    &--error { color: $error-color; background: rgba($error-color, 0.04); }
+}
+
+/* =========================================
+   Ratings Table
+   ========================================= */
+.owner-table-wrap {
+    overflow-x: auto;
+    border: 1px solid #e2e8f0;
+    border-radius: $border-radius-md;
+    background: white;
+    @include card-shadow;
+}
+
+.owner-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: $font-size-sm;
+
+    thead {
+        background: #f8fafc;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    th {
+        padding: $spacing-sm $spacing-md;
+        text-align: left;
+        font-weight: 600;
+        color: $text-light;
+        white-space: nowrap;
+    }
+
+    td {
+        padding: $spacing-sm $spacing-md;
+        color: $text-main;
+        border-bottom: 1px solid #f1f5f9;
+        vertical-align: middle;
+    }
+
+    tbody tr {
+        &:last-child td { border-bottom: none; }
+        &:hover { background: #f8fafc; }
+    }
+
+    .star-rating {
+        color: #f59e0b;
+        font-weight: 600;
+    }
+}

@@ -173,13 +173,12 @@ export async function getUserById(req, res) {
              LEFT JOIN ratings r ON r.store_id = s.id
              WHERE s.owner_id = $1
              GROUP BY s.id, s.name
-             ORDER BY s.created_at DESC
-             LIMIT 1`,
+             ORDER BY s.created_at ASC`,
             [id]
         );
 
         if (storeResult.rows.length > 0) {
-            user.store = storeResult.rows[0];
+            user.stores = storeResult.rows;
         }
 
         res.status(200).json({

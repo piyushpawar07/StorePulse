@@ -17,5 +17,10 @@ export default defineConfig([
       globals: globals.browser,
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
+    rules: {
+      // Standard async data-fetching in effects is intentional in this project.
+      // void asyncFn() inside useEffect is the correct pattern for data fetching hooks.
+      'react-hooks/set-state-in-effect': 'warn',
+    },
   },
 ])

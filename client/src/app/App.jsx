@@ -16,6 +16,7 @@ const ROLE_CLASSES = {
     STORE_OWNER: 'badge--owner',
 };
 
+/** Restores session on mount and shows a splash while loading. */
 const AuthInitializer = ({ children }) => {
     const { restoreSession, loading } = useAuth();
 
@@ -34,13 +35,46 @@ const AuthInitializer = ({ children }) => {
     return children;
 };
 
+/** Role-aware navigation links. */
+const NavLinks = ({ role, onClose }) => {
+    const linkProps = (to) => ({
+        to,
+        onClick: onClose,
+        className: ({ isActive }) => `nav-link${isActive ? ' nav-link--active' : ''}`,
+    });
+
+    if (role === 'ADMIN') {
+        return (
+            <>
+                <NavLink {...linkProps('/admin')}>Dashboard</NavLink>
+                <NavLink {...linkProps('/admin/users')}>Users</NavLink>
+                <NavLink {...linkProps('/admin/stores')}>Stores</NavLink>
+            </>
+        );
+    }
+
+    if (role === 'STORE_OWNER') {
+        return (
+            <>
+                <NavLink {...linkProps('/owner')}>Dashboard</NavLink>
+                <NavLink {...linkProps('/owner/ratings')}>Ratings</NavLink>
+            </>
+        );
+    }
+
+    // USER (default)
+    return <NavLink {...linkProps('/stores')}>Stores</NavLink>;
+};
+
 const Navbar = () => {
     const { user, isAuthenticated, handleLogout } = useAuth();
     const navigate = useNavigate();
     const [menuOpen, setMenuOpen] = useState(false);
 
+    const closeMenu = () => setMenuOpen(false);
+
     const onLogout = async () => {
-        setMenuOpen(false);
+        closeMenu();
         await handleLogout();
         navigate('/login');
     };
@@ -60,9 +94,7 @@ const Navbar = () => {
                 {isAuthenticated && user ? (
                     <>
                         <nav className="navbar__links">
-                            <NavLink to="/stores" className={({ isActive }) => isActive ? 'nav-link nav-link--active' : 'nav-link'}>
-                                Stores
-                            </NavLink>
+                            <NavLinks role={user.role} onClose={closeMenu} />
                         </nav>
 
                         <div className="navbar__user">
@@ -81,6 +113,7 @@ const Navbar = () => {
                             className="navbar__hamburger"
                             onClick={() => setMenuOpen((o) => !o)}
                             aria-label="Toggle menu"
+                            aria-expanded={menuOpen}
                         >
                             ☰
                         </button>
@@ -96,9 +129,13 @@ const Navbar = () => {
             {/* Mobile dropdown */}
             {isAuthenticated && menuOpen && (
                 <div className="navbar__mobile-menu">
-                    <NavLink to="/stores" onClick={() => setMenuOpen(false)} className="mobile-link">Stores</NavLink>
-                    <NavLink to="/change-password" onClick={() => setMenuOpen(false)} className="mobile-link">Change Password</NavLink>
-                    <button className="mobile-link mobile-link--logout" onClick={onLogout}>Logout</button>
+                    <NavLinks role={user?.role} onClose={closeMenu} />
+                    <NavLink to="/change-password" onClick={closeMenu} className="mobile-link">
+                        Change Password
+                    </NavLink>
+                    <button className="mobile-link mobile-link--logout" onClick={onLogout}>
+                        Logout
+                    </button>
                 </div>
             )}
         </header>
