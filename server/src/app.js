@@ -1,6 +1,4 @@
 import express from "express";
-import path from "path";
-import { fileURLToPath } from "url";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRouter from "./routes/auth.routes.js";
