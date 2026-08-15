@@ -6,13 +6,13 @@ import './Auth.scss';
 const Register = () => {
     const { handleRegister, loading, error, clearError } = useAuth();
     const navigate = useNavigate();
-    
+
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         password: '',
         address: '',
-        role: 'USER', // Allowed DB values: USER, STORE_OWNER, ADMIN
+        role: 'USER',
     });
 
     const handleChange = (e) => {
@@ -35,7 +35,7 @@ const Register = () => {
         <div className="auth-container">
             <div className="auth-card">
                 <h2>Create an Account</h2>
-                <p>Join the Store Rating Platform</p>
+                <p>Join StorePulse</p>
 
                 {error && <div className="auth-error">{error}</div>}
 
@@ -63,7 +63,7 @@ const Register = () => {
                             required
                         />
                     </div>
-                    
+
                     <div className="form-group">
                         <label htmlFor="password">Password</label>
                         <input
@@ -92,7 +92,7 @@ const Register = () => {
                     <div className="form-group">
                         <label htmlFor="role">I am a...</label>
                         <select id="role" name="role" value={formData.role} onChange={handleChange}>
-                            <option value="USER">Normal User (Rater)</option>
+                            <option value="USER">User</option>
                             <option value="STORE_OWNER">Store Owner</option>
                         </select>
                     </div>

@@ -1,0 +1,45 @@
+@use '../../../shared/styles/variables' as *;
+
+.rating-widget {
+    margin-top: 1rem;
+
+    &__label {
+        font-size: $font-size-sm;
+        color: $text-light;
+        margin-bottom: 0.4rem;
+    }
+
+    &__stars {
+        display: flex;
+        gap: 0.25rem;
+    }
+
+    &__status {
+        font-size: $font-size-sm;
+        margin-top: 0.4rem;
+
+        &--loading { color: $text-light; }
+        &--success { color: $success-color; }
+        &--error   { color: $error-color; }
+    }
+}
+
+.star-btn {
+    background: none;
+    border: none;
+    font-size: 1.6rem;
+    cursor: pointer;
+    color: #d1d5db;
+    padding: 0;
+    line-height: 1;
+    transition: color 0.15s, transform 0.1s;
+
+    &--filled { color: #f59e0b; }
+
+    &:hover:not(:disabled) {
+        color: #f59e0b;
+        transform: scale(1.15);
+    }
+
+    &:disabled { cursor: not-allowed; opacity: 0.6; }
+}

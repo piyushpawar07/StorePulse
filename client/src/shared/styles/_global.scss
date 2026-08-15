@@ -1,50 +1,236 @@
 @use 'variables' as *;
 @use 'mixins' as *;
 
-* {
+
+*, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+
 body {
     font-family: $font-family-base;
-    font-size: $font-size-base;
     background-color: $background-color;
     color: $text-main;
-    line-height: 1.5;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
 }
+
+img, svg { display: block; max-width: 100%; }
 
 a {
     color: $primary-color;
     text-decoration: none;
-    
-    &:hover {
-        color: $primary-hover;
-    }
+    &:hover { color: $primary-hover; }
 }
+
 
 .app-container {
     min-height: 100vh;
-    @include flex-column;
-}
-
-.app-header {
-    background-color: white;
-    padding: $spacing-md $spacing-xl;
-    @include card-shadow;
-    
-    h1 {
-        font-size: $font-size-xl;
-        color: $primary-color;
-    }
+    display: flex;
+    flex-direction: column;
 }
 
 .app-content {
     flex: 1;
     padding: $spacing-xl;
-    max-width: 1200px;
+    max-width: 1100px;
     margin: 0 auto;
     width: 100%;
+
+    @media (max-width: 640px) {
+        padding: $spacing-md;
+    }
+}
+
+.app-splash {
+    @include flex-center;
+    min-height: 100vh;
+    font-size: $font-size-lg;
+    color: $text-light;
+}
+
+
+.navbar {
+    background: white;
+    border-bottom: 1px solid #e2e8f0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    &__inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 $spacing-xl;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        gap: $spacing-lg;
+
+        @media (max-width: 640px) {
+            padding: 0 $spacing-md;
+        }
+    }
+
+    &__brand {
+        font-weight: 700;
+        font-size: $font-size-lg;
+        color: $primary-color;
+        white-space: nowrap;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        &:hover { color: $primary-hover; }
+    }
+
+    &__logo {
+        height: 32px;
+        width: auto;
+        display: block;
+        flex-shrink: 0;
+    }
+
+    &__links {
+        display: flex;
+        gap: $spacing-md;
+
+        @media (max-width: 640px) { display: none; }
+    }
+
+    &__user {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+        margin-left: auto;
+        flex-wrap: wrap;
+
+        @media (max-width: 640px) { display: none; }
+    }
+
+    &__name {
+        font-size: $font-size-sm;
+        font-weight: 500;
+        color: $text-main;
+        max-width: 160px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    &__actions {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+    }
+
+    &__guest {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+        margin-left: auto;
+    }
+
+    &__hamburger {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.25rem;
+        cursor: pointer;
+        color: $text-main;
+        margin-left: auto;
+        padding: $spacing-xs;
+
+        @media (max-width: 640px) { display: block; }
+    }
+
+    &__mobile-menu {
+        display: flex;
+        flex-direction: column;
+        background: white;
+        border-top: 1px solid #e2e8f0;
+        padding: $spacing-sm 0;
+    }
+}
+
+.nav-link {
+    font-size: $font-size-sm;
+    font-weight: 500;
+    color: $text-light;
+    padding: $spacing-xs $spacing-sm;
+    border-radius: $border-radius-sm;
+    transition: color 0.15s, background 0.15s;
+
+    &:hover { color: $primary-color; background: #f1f5f9; }
+    &--active { color: $primary-color; }
+}
+
+.mobile-link {
+    display: block;
+    padding: $spacing-sm $spacing-xl;
+    font-size: $font-size-sm;
+    font-weight: 500;
+    color: $text-main;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    width: 100%;
+
+    &:hover { background: #f8fafc; color: $primary-color; }
+    &--logout { color: $error-color; }
+}
+
+
+.badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 999px;
+    flex-shrink: 0;
+
+    &--user   { background: #dbeafe; color: #1d4ed8; }
+    &--admin  { background: #fee2e2; color: #b91c1c; }
+    &--owner  { background: #fef9c3; color: #92400e; }
+}
+
+
+.btn-primary {
+    display: inline-block;
+    padding: $spacing-sm $spacing-lg;
+    background: $primary-color;
+    color: white;
+    border: none;
+    border-radius: $border-radius-sm;
+    font-size: $font-size-base;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-family: inherit;
+
+    &:hover:not(:disabled) { background: $primary-hover; }
+    &:focus-visible { outline: 2px solid $primary-color; outline-offset: 2px; }
+    &:disabled { opacity: 0.6; cursor: not-allowed; }
+    &.btn-sm { font-size: $font-size-sm; padding: $spacing-xs $spacing-md; }
+}
+
+.btn-logout {
+    background: none;
+    border: 1px solid #e2e8f0;
+    border-radius: $border-radius-sm;
+    font-size: $font-size-sm;
+    font-weight: 500;
+    color: $text-light;
+    cursor: pointer;
+    padding: $spacing-xs $spacing-sm;
+    font-family: inherit;
+    transition: border-color 0.15s, color 0.15s;
+
+    &:hover { border-color: $error-color; color: $error-color; }
 }

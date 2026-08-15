@@ -3,22 +3,9 @@ import App from './App';
 import Login from '../features/auth/pages/Login';
 import Register from '../features/auth/pages/Register';
 import ChangePassword from '../features/auth/pages/ChangePassword';
+import StoreList from '../features/stores/pages/StoreList';
+import StoreDetail from '../features/stores/pages/StoreDetail';
 import ProtectedRoute from '../shared/components/ProtectedRoute';
-import { useAuth } from '../features/auth/hooks/useAuth';
-
-// A simple test component for the home page
-const HomeTest = () => {
-    const { user } = useAuth();
-    return (
-        <div>
-            <h2>Dashboard</h2>
-            <p>This is a protected route. Only authenticated users can see this.</p>
-            {user?.role === 'ADMIN' && <div style={{marginTop: '1rem', padding: '1rem', background: '#fee2e2'}}>ADMIN ZONE: Hello Admin!</div>}
-            {user?.role === 'STORE_OWNER' && <div style={{marginTop: '1rem', padding: '1rem', background: '#fef08a'}}>OWNER ZONE: Hello Store Owner!</div>}
-            {user?.role === 'USER' && <div style={{marginTop: '1rem', padding: '1rem', background: '#dcfce7'}}>USER ZONE: Hello Normal User!</div>}
-        </div>
-    );
-};
 
 const router = createBrowserRouter([
     {
@@ -29,7 +16,23 @@ const router = createBrowserRouter([
                 index: true,
                 element: (
                     <ProtectedRoute allowedRoles={['USER', 'STORE_OWNER', 'ADMIN']}>
-                        <HomeTest />
+                        <StoreList />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: 'stores',
+                element: (
+                    <ProtectedRoute allowedRoles={['USER', 'STORE_OWNER', 'ADMIN']}>
+                        <StoreList />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: 'stores/:id',
+                element: (
+                    <ProtectedRoute allowedRoles={['USER', 'STORE_OWNER', 'ADMIN']}>
+                        <StoreDetail />
                     </ProtectedRoute>
                 ),
             },
@@ -49,7 +52,6 @@ const router = createBrowserRouter([
                     </ProtectedRoute>
                 ),
             },
-            // Other protected routes will be added here in future parts
         ],
     },
 ]);
